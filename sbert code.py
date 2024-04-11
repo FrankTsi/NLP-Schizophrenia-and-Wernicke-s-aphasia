@@ -1,9 +1,4 @@
 
-#We work first on participant alone to measure internal coherence
-
-# naming the file I analyzed. Each row consisted of a the participant answer, excluding the interviewer, on a task. So if the participant did 5 tasks, they would have 5 rows.
-
-
 df = pd.read_csv("/Users/anasmayya/Desktop/EMCL++/Thesis/Data/aphasia bank healthy/aphasia_bank_healthy_par_only_may_25.csv")
 
 
