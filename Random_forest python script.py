@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import pandas as pd
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
@@ -14,32 +8,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
-
-# In[13]:
-
-
 #Loading data
 df = pd.read_csv('Word_sent_embedings.csv', sep = ',') #replace with your path
 df.head()
 
-
-# In[14]:
-
-
 # Replace all NaN values with zero
 df.fillna(0, inplace=True)
 
-
-# In[7]:
-
-
-
-
-
-# In[15]:
-
-
-#SSD VS WERNICKE
+#SSD VS WERNICKE COMPARISON
 # Filter the dataset to include only two levels of Diagnosis: SSD vs Wernicke, SSD vs Healthy, Wernicke vs Healthy
 df_bin = df[df['Diagnosis'].isin(['SSD', 'Wernicke'])] # Healthy vs Wernicke
 
@@ -50,31 +26,20 @@ y = df_bin['Diagnosis']
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 
-# In[16]:
-
-
-#Baseline Model for Wernicke vs SSD
+#Majority Baseline Model for Wernicke vs SSD
 from sklearn.metrics import accuracy_score
 # Majority Class Baseline Classifier
 mb = DummyClassifier(strategy='most_frequent')
-
 # Fit the model
 mb.fit(X, y)
-
 # Predict using the same data
 y_pred = mb.predict(X)
-
 # Calculate accuracy
 accuracy = accuracy_score(y, y_pred)
 print("Majority Class Baseline accuracy:", accuracy)
 
-
-# In[17]:
-
-
 # Define the Random Forest classifier
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
-
 # Perform k=5 fold cross-validation (Stratified KFold) for Healthy controls vs Wernicke
 cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
@@ -127,22 +92,7 @@ for idx, report in enumerate(classification_reports, 1):
     print("Fold", idx, ":\n", classification_report(y_test, y_pred))
 
 
-# In[ ]:
-
-
-
-
-
-# In[18]:
-
-
-
-
-
-# In[19]:
-
-
-#Healthy_C VS WERNICKE
+#Healthy_C VS WERNICKE COMPARISON
 # Filter the dataset to include only two levels of Diagnosis: SSD vs Wernicke, SSD vs Healthy, Wernicke vs Healthy
 df_bin = df[df['Diagnosis'].isin(['Healthy_C', 'Wernicke'])] # Healthy vs Wernicke
 
@@ -152,10 +102,6 @@ y = df_bin['Diagnosis']
 
 #Training and Test split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-
-# In[20]:
-
 
 # Define the Random Forest classifier
 rf1 = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -211,23 +157,7 @@ print("Classification Reports for Each Fold:")
 for idx, report in enumerate(classification_reports, 1):
     print("Fold", idx, ":\n", classification_report(y_test, y_pred))
 
-
-# In[ ]:
-
-
-
-
-
-# In[102]:
-
-
-
-
-
-# In[21]:
-
-
-#HEALTHY CONTROLS VS SSD
+#HEALTHY CONTROLS VS SSD COMPARISON
 # Filter the dataset to include only two levels of Diagnosis: SSD vs Wernicke, SSD vs Healthy, Wernicke vs Healthy
 df_bin = df[df['Diagnosis'].isin(['SSD', 'Healthy_C'])] # Healthy vs SSD
 
@@ -238,28 +168,17 @@ y = df_bin['Diagnosis']
 #Training and Test split
 #X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-
-# In[22]:
-
-
 #Baseline Model for  SSD vs Healthy control
 from sklearn.metrics import accuracy_score
 # Majority Class Baseline Classifier
 mb = DummyClassifier(strategy='most_frequent')
-
 # Fit the model
 mb.fit(X, y)
-
 # Predict using the same data
 y_pred = mb.predict(X)
-
 # Calculate accuracy
 accuracy = accuracy_score(y, y_pred)
 print("Majority Class Baseline accuracy:", accuracy)
-
-
-# In[23]:
-
 
 # Define the Random Forest classifier
 rf2 = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -315,16 +234,6 @@ print("Classification Reports for Each Fold:")
 for idx, report in enumerate(classification_reports, 1):
     print("Fold", idx, ":\n", classification_report(y_test, y_pred))
 
-
-# In[ ]:
-
-
-
-
-
-# In[24]:
-
-
 #FEATURE IMPORTANCE
 # Get feature importances for Wernicke vs Healthy Control
 feature_importances_WHC = rf1.feature_importances_
@@ -369,10 +278,5 @@ plt.tight_layout()
 # Save the plot 
 plt.savefig('feature_importance_comparison.pdf', dpi=300)
 plt.show()
-
-
-# In[ ]:
-
-
 
 
